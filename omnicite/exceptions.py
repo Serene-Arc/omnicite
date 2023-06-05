@@ -6,6 +6,10 @@ class OmniCiteSourceException(OmniCiteException):
     pass
 
 
+class OmniCiteAPIKeyMissing(OmniCiteSourceException):
+    pass
+
+
 class OmniCiteSourceFieldError(OmniCiteSourceException):
     pass
 

@@ -2,6 +2,7 @@ import abc
 import logging
 from typing import Dict, Sequence, Union
 
+import confuse
 import requests
 
 from omnicite.exceptions import OmniCiteSourceFieldError, OmniCiteWebError, ResourceNotFound
@@ -14,9 +15,11 @@ class BaseSource(abc.ABC):
     required_fields: Sequence = ()
     optional_fields: Sequence = ()
 
-    def __init__(self, identifier: str):
+    def __init__(self, identifier: str, configuration: confuse.Configuration):
         self.identifier = identifier
+        self.configuration = configuration
         self.fields: Dict = dict()
+        self.retrieve_information()
 
     @abc.abstractmethod
     def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:

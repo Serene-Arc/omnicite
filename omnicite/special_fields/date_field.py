@@ -12,12 +12,13 @@ class DateField(BaseSpecialField):
         super().__init__(field_contents)
 
     @staticmethod
-    def convert_time_string_to_datetime(time_string: str, format_string: Optional[str]) -> datetime:
+    def convert_time_string_to_date(time_string: str, format_string: Optional[str]) -> date:
         try:
             if format_string:
                 dt = datetime.strptime(time_string, format_string)
             else:
                 dt = datetime.fromisoformat(time_string)
+            dt = dt.date()
             return dt
         except ValueError:
             raise OmniCiteSourceFieldError(
@@ -26,7 +27,7 @@ class DateField(BaseSpecialField):
 
     @staticmethod
     def construct_date_field(time_string: str, format_string: Optional[str] = None) -> "DateField":
-        dt = DateField.convert_time_string_to_datetime(time_string, format_string)
+        dt = DateField.convert_time_string_to_date(time_string, format_string)
         return dt
 
     def __str__(self) -> str:
