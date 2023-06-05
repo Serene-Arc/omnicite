@@ -14,6 +14,7 @@ from omnicite.special_fields.name import Name
         ("John Doe, Jr.", "John Doe Jr."),
         ("{Federal Government of Australia}", "Federal Government of Australia"),
         ("Guillermo de la Cruz", "Guillermo de la Cruz"),
+        ("Guillermo del Toro", "Guillermo del Toro"),
         ("Johann Wolfgang von Goethe", "Johann Wolfgang von Goethe"),
         ("johann wolfgang von goethe", "Johann Wolfgang von Goethe"),
         ("Chigozie Nelson Nkalu", "Chigozie Nelson Nkalu"),

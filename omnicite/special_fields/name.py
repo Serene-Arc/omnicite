@@ -33,6 +33,7 @@ class Name:
     def _capitalise_name_parts(in_strings: Sequence[str]) -> Sequence[str]:
         exception_words = (
             "de",
+            "del",
             "la",
             "van",
             "von",
