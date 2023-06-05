@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional
 
 from omnicite.exceptions import OmniCiteSourceFieldError
@@ -8,7 +8,7 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
 class DateField(BaseSpecialField):
     """Constructs a datetime and stores and uses it as needed, for dates"""
 
-    def __init__(self, field_contents: datetime):
+    def __init__(self, field_contents: date):
         super().__init__(field_contents)
 
     @staticmethod

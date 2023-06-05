@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 
 from omnicite.sources.articles.base_article import BaseArticle
@@ -13,11 +15,11 @@ from omnicite.sources.articles.base_article import BaseArticle
                 "author": "Viroj Wiwanitki",
                 "doi": "10.1590/0102-311x00133115",
                 "journaltitle": "Cadernos de Saúde Pública",
-                "month": 11,
+                "month": "11",
                 "number": "11",
                 "publisher": "FapUNIFESP (SciELO)",
                 "title": "Congenital Zika virus syndrome",
-                "url": "https://doi.org/10.1590/0102-311x00133115",
+                "url": "http://dx.doi.org/10.1590/0102-311x00133115",
                 "volume": "32",
                 "year": "2016",
             },
@@ -37,6 +39,7 @@ from omnicite.sources.articles.base_article import BaseArticle
                 "title": "Fiscal Policy and Economic Stabilization Dynamics in Sub-Saharan Africa: "
                 "A New Evidence from Panel VEC Model and Hodrick-Prescott Filter Cyclical Decomposition",
                 "journaltitle": "SAGE Open",
+                "urldate": date.today().isoformat(),
             },
         ),
     ),

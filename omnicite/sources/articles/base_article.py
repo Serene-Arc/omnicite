@@ -1,5 +1,6 @@
 import json
 from abc import ABC
+from datetime import date
 
 import crossref.restful
 
@@ -76,8 +77,10 @@ class BaseArticle(BaseSource, ABC):
             "publisher": work["publisher"],
             "url": work["URL"],
             "volume": work["volume"],
-            "pages": work["page"],
+            "urldate": DateField(date.today()),
         }
+        if "page" in work:
+            out["pages"] = work["page"]
 
         # flatten the dictionary in case any lists sneak in
         for key in out.keys():
