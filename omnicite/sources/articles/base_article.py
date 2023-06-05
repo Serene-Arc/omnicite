@@ -12,6 +12,7 @@ from omnicite.special_fields.name_field import NameField
 
 
 class BaseArticle(BaseSource, ABC):
+    entry_type = "article"
     required_fields = (
         "author",
         "journaltitle",
