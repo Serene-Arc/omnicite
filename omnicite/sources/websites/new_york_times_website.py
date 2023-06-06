@@ -45,3 +45,7 @@ class NewYorkTimesWebsite(BaseWebsite):
             "author": NameField.construct_name_field(self.split_and_sanitise_byline(article_metadata["byline"])),
             "subtitle": article_metadata["abstract"],
         }
+
+    def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:
+        # TODO
+        raise NotImplementedError

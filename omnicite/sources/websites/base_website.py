@@ -43,6 +43,3 @@ class BaseWebsite(BaseSource, ABC):
 
     def __init__(self, url: str, configuration: confuse.Configuration = None):
         super().__init__(url, configuration)
-
-    def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:
-        pass

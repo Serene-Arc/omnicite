@@ -3,3 +3,4 @@ natsort
 crossrefapi
 confuse
 pynytimes
+validators
