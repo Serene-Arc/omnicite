@@ -1,7 +1,9 @@
 import json
 from abc import ABC
 from datetime import date
+from typing import Optional
 
+import confuse
 import crossref.restful
 
 from omnicite.exceptions import OmniCiteSourceFieldError
@@ -56,8 +58,8 @@ class BaseArticle(BaseSource, ABC):
         "volume",
     )
 
-    def __init__(self, identifier: str):
-        super().__init__(identifier)
+    def __init__(self, identifier: str, configuration: Optional[confuse.Configuration]):
+        super().__init__(identifier, configuration)
 
     @staticmethod
     def get_doi_information(doi: str) -> dict[str, str | BaseSpecialField]:
