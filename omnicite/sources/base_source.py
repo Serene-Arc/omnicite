@@ -1,11 +1,11 @@
 import abc
 import logging
-from typing import Dict, Sequence, Union
+from typing import Any, Dict, Iterator, Sequence, Union
 
 import confuse
 import requests
 
-from omnicite.exceptions import OmniCiteSourceFieldError, OmniCiteWebError, ResourceNotFound
+from omnicite.exceptions import OmniCiteSourceException, OmniCiteSourceFieldError, OmniCiteWebError, ResourceNotFound
 
 logger = logging.getLogger(__name__)
 
@@ -20,10 +20,6 @@ class BaseSource(abc.ABC):
         self.configuration = configuration
         self.fields: Dict = dict()
         self.retrieve_information()
-
-    @abc.abstractmethod
-    def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:
-        raise NotImplementedError
 
     @abc.abstractmethod
     def retrieve_information(self):
@@ -93,3 +89,21 @@ class BaseSource(abc.ABC):
                 if subfield in key_fields:
                     out.append(subfield)
         return out
+
+    @staticmethod
+    def _format_unique_identifier(*args: Any) -> str:
+        out = " ".join([str(a) for a in args])
+        out = out.lower()
+        out = out.replace(" ", "_")
+        out = out.replace("'-", "")
+        return out
+
+    @abc.abstractmethod
+    def _unique_id_generator(self) -> Iterator[str]:
+        raise NotImplementedError
+
+    def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:
+        for val in self._unique_id_generator():
+            if val not in existing_identifiers:
+                return val
+        raise OmniCiteSourceException(f"Cannot create unique identifier for source '{self.identifier}'")

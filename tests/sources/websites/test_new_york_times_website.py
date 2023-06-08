@@ -1,11 +1,14 @@
 from datetime import date
 from typing import Sequence
+from unittest.mock import MagicMock
 
 import pytest
 from confuse import Configuration
 
 from omnicite.sources.websites.new_york_times_website import NewYorkTimesWebsite
 from omnicite.special_fields.base_special_field import BaseSpecialField
+from omnicite.special_fields.date_field import DateField
+from omnicite.special_fields.name_field import NameField
 
 
 @pytest.mark.online
@@ -43,7 +46,8 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
                 "author": "Jacey Fortin and Eliza Fawcett and Jim Robbins",
                 "date": "2023-05-18",
                 "organization": "New York Times",
-                "subtitle": "Users of the popular social media site were less than pleased by the ban, enacted over fears that sensitive user data could end up in the hands of the Chinese government.",
+                "subtitle": "Users of the popular social media site were less than pleased by the ban, enacted over "
+                "fears that sensitive user data could end up in the hands of the Chinese government.",
                 "title": "In Montana, a TikTok Ban Could Be a ‘Kick in the Face’",
                 "url": "https://www.nytimes.com/2023/05/18/us/tiktok-ban-montana-reaction.html",
                 "urldate": date.today().isoformat(),
@@ -88,4 +92,72 @@ def test_make_source(
 )
 def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
     result = NewYorkTimesWebsite.split_and_sanitise_byline(test_string)
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    ("test_fields", "existing_identifiers", "expected"),
+    (
+        (
+            {
+                "date": DateField(date(2023, 6, 5)),
+                "author": NameField.construct_name_field("Serene Arc"),
+                "organization": "New York Times",
+            },
+            (),
+            "arc_2023_nyt",
+        ),
+        (
+            {
+                "date": DateField(date(2023, 6, 5)),
+                "author": NameField.construct_name_field("Serene Arc"),
+                "organization": "New York Times",
+            },
+            ("arc_2023_nyt",),
+            "arc_2023_nyt_1",
+        ),
+        (
+            {
+                "date": DateField(date(2023, 6, 5)),
+                "author": NameField.construct_name_field(
+                    (
+                        "Serene Arc",
+                        "Test Testman",
+                    )
+                ),
+                "organization": "New York Times",
+            },
+            ("arc_2023_nyt",),
+            "arc_testman_2023_nyt",
+        ),
+        (
+            {
+                "date": DateField(date(2023, 6, 5)),
+                "author": NameField.construct_name_field(
+                    (
+                        "Serene Arc",
+                        "Test Testman",
+                        "John Doe",
+                    )
+                ),
+                "organization": "New York Times",
+            },
+            (
+                "arc_2023_nyt",
+                "arc_testman_2023_nyt",
+                "arc_testman_doe_2023_nyt",
+            ),
+            "arc_testman_doe_2023_nyt_1",
+        ),
+    ),
+)
+def test_generate_unique_identifier(
+    test_fields: dict[str, str | BaseSpecialField],
+    existing_identifiers: Sequence[str],
+    expected: str,
+):
+    mock_nyt_website = MagicMock()
+    mock_nyt_website._unique_id_generator = lambda: NewYorkTimesWebsite._unique_id_generator(mock_nyt_website)
+    mock_nyt_website.fields = test_fields
+    result = NewYorkTimesWebsite.generate_unique_identifier(mock_nyt_website, existing_identifiers)
     assert result == expected

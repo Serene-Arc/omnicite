@@ -1,6 +1,6 @@
 import re
 from datetime import date
-from typing import Sequence
+from typing import Iterator, Sequence
 
 import confuse
 from pynytimes import NYTAPI
@@ -46,6 +46,25 @@ class NewYorkTimesWebsite(BaseWebsite):
             "subtitle": article_metadata["abstract"],
         }
 
-    def generate_unique_identifier(self, existing_identifiers: Sequence[str]) -> str:
-        # TODO
-        raise NotImplementedError
+    def _unique_id_generator(self) -> Iterator[str]:
+        essential_fields = (
+            self.fields["author"].field_contents,
+            self.fields["date"].field_contents.year,
+            "nyt",
+        )
+        for i in range(1, len(essential_fields[0]) + 1):
+            yield BaseWebsite._format_unique_identifier(
+                *[t.family_name for t in essential_fields[0][:i]],
+                essential_fields[1],
+                essential_fields[2],
+            )
+
+        i = 1
+        while True:
+            yield BaseWebsite._format_unique_identifier(
+                *[t.family_name for t in essential_fields[0]],
+                essential_fields[1],
+                essential_fields[2],
+                i,
+            )
+            i += 1
