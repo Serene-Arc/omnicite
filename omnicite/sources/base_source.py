@@ -1,6 +1,6 @@
 import abc
 import logging
-from typing import Any, Dict, Iterator, Sequence, Union
+from typing import Any, Dict, Iterator, Optional, Sequence, Union
 
 import confuse
 import requests
@@ -15,7 +15,7 @@ class BaseSource(abc.ABC):
     required_fields: Sequence = ()
     optional_fields: Sequence = ()
 
-    def __init__(self, identifier: str, configuration: confuse.Configuration):
+    def __init__(self, identifier: str, configuration: Optional[confuse.Configuration]):
         self.identifier = identifier
         self.configuration = configuration
         self.fields: Dict = dict()
