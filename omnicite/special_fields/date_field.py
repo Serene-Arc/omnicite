@@ -28,7 +28,8 @@ class DateField(BaseSpecialField):
     @staticmethod
     def construct_date_field(time_string: str, format_string: Optional[str] = None) -> "DateField":
         dt = DateField.convert_time_string_to_date(time_string, format_string)
-        return dt
+        out = DateField(dt)
+        return out
 
     def __str__(self) -> str:
         out = self.field_contents.isoformat()
