@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Sequence
+from typing import Optional, Sequence
 
 import confuse
 
@@ -41,5 +41,5 @@ class BaseWebsite(BaseSource, ABC):
         "version",
     ]
 
-    def __init__(self, url: str, configuration: confuse.Configuration = None):
+    def __init__(self, url: str, configuration: Optional[confuse.Configuration]):
         super().__init__(url, configuration)
