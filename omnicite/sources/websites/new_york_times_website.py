@@ -49,7 +49,7 @@ class NewYorkTimesWebsite(BaseWebsite):
     def _unique_id_generator(self) -> Iterator[str]:
         essential_fields = (
             self.fields["author"].field_contents,
-            self.fields["date"].field_contents.year,
+            self.fields["date"].year,
             "nyt",
         )
         for i in range(1, len(essential_fields[0]) + 1):

@@ -6,10 +6,14 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
 
 
 class DateField(BaseSpecialField):
-    """Constructs a datetime and stores and uses it as needed, for dates"""
+    """Constructs a date and stores and uses it as needed, for dates"""
 
     def __init__(self, field_contents: date):
         super().__init__(field_contents)
+
+    @property
+    def year(self) -> int:
+        return self.field_contents.year
 
     @staticmethod
     def convert_time_string_to_date(time_string: str, format_string: Optional[str]) -> date:
