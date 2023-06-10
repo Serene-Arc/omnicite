@@ -1,6 +1,9 @@
-requests
-natsort
-crossrefapi
+beautifulsoup4
+bs4
 confuse
+isbnlib
 pynytimes
+pytest
+requests
+setuptools
 validators

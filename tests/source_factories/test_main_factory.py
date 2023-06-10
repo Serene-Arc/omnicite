@@ -5,6 +5,7 @@ import pytest
 from omnicite.source_factories.main_factory import MainFactory
 from omnicite.sources.articles.raw_doi import RawDOI
 from omnicite.sources.base_source import BaseSource
+from omnicite.sources.books.raw_isbn import RawISBN
 from omnicite.sources.websites.new_york_times_website import NewYorkTimesWebsite
 
 
@@ -45,6 +46,7 @@ def test_is_doi(test_identifier: str, expected: bool):
         ("10.1590/0102-311x00133115", RawDOI),
         ("https://doi.org/10.1177/21582440231178261", RawDOI),
         ("https://www.nytimes.com/2023/05/18/us/tiktok-ban-montana-reaction.html", NewYorkTimesWebsite),
+        ("9780261102378", RawISBN),
     ),
 )
 def test_pull_lever(test_identifier: str, expected_type: Type[BaseSource]):

@@ -1,10 +1,13 @@
 import re
 from typing import Type
 
+import isbnlib
 import validators
 
+from omnicite.exceptions import OmniCiteException
 from omnicite.source_factories.article_factory import ArticleFactory
 from omnicite.source_factories.base_factory import BaseFactory
+from omnicite.source_factories.book_factory import BookFactory
 from omnicite.source_factories.website_factory import WebsiteFactory
 from omnicite.sources.base_source import BaseSource
 
@@ -14,8 +17,11 @@ class MainFactory(BaseFactory):
     def pull_lever(identifier: str) -> Type[BaseSource]:
         if MainFactory.is_doi(identifier):
             return ArticleFactory.pull_lever(identifier)
-        if MainFactory.is_url(identifier):
+        elif not isbnlib.notisbn(identifier):
+            return BookFactory.pull_lever(identifier)
+        elif MainFactory.is_url(identifier):
             return WebsiteFactory.pull_lever(identifier)
+        raise OmniCiteException(f"Could not find a source type for identifier '{identifier}'")
 
     @staticmethod
     def is_url(identifier: str) -> bool:
