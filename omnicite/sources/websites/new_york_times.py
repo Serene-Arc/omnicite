@@ -11,7 +11,7 @@ from omnicite.special_fields.date_field import DateField
 from omnicite.special_fields.name_field import NameField
 
 
-class NewYorkTimesWebsite(BaseWebsite):
+class NewYorkTimes(BaseWebsite):
     def __init__(self, url: str, configuration: confuse.Configuration):
         super().__init__(url, configuration)
 

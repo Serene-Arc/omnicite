@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from confuse import Configuration
 
-from omnicite.sources.websites.new_york_times_website import NewYorkTimesWebsite
+from omnicite.sources.websites.new_york_times import NewYorkTimes
 from omnicite.special_fields.base_special_field import BaseSpecialField
 from omnicite.special_fields.date_field import DateField
 from omnicite.special_fields.name_field import NameField
@@ -60,7 +60,7 @@ def test_make_source(
     expected_dict: dict[str, str | BaseSpecialField],
     test_configuration: Configuration,
 ):
-    test_source = NewYorkTimesWebsite(test_url, test_configuration)
+    test_source = NewYorkTimes(test_url, test_configuration)
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
@@ -91,7 +91,7 @@ def test_make_source(
     ),
 )
 def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
-    result = NewYorkTimesWebsite.split_and_sanitise_byline(test_string)
+    result = NewYorkTimes.split_and_sanitise_byline(test_string)
     assert result == expected
 
 
@@ -165,7 +165,7 @@ def test_generate_unique_identifier(
     existing_identifiers: Sequence[str],
     expected: str,
 ):
-    class TestNewYorkTimesWebsite(NewYorkTimesWebsite):
+    class TestNewYorkTimesWebsite(NewYorkTimes):
         def __init__(self, identifier: str):
             super().__init__(identifier, MagicMock())
             self.fields = test_fields

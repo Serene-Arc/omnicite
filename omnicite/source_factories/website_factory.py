@@ -3,7 +3,7 @@ from urllib.parse import ParseResult, urlparse
 
 from omnicite.source_factories.base_factory import BaseFactory
 from omnicite.sources.base_source import BaseSource
-from omnicite.sources.websites.new_york_times_website import NewYorkTimesWebsite
+from omnicite.sources.websites.new_york_times import NewYorkTimes
 
 
 class WebsiteFactory(BaseFactory):
@@ -11,7 +11,7 @@ class WebsiteFactory(BaseFactory):
     def pull_lever(identifier: str) -> Type[BaseSource]:
         url_parts = WebsiteFactory.split_url(identifier)
         if "nytimes.com" in url_parts.netloc:
-            return NewYorkTimesWebsite
+            return NewYorkTimes
 
     @staticmethod
     def split_url(identifier: str) -> ParseResult:
