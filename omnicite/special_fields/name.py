@@ -7,6 +7,7 @@ class Name:
         "bin",
         "de",
         "del",
+        "den",
         "ibn",
         "la",
         "van",
