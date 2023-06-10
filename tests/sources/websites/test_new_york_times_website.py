@@ -101,7 +101,7 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
         (
             {
                 "date": DateField(date(2023, 6, 5)),
-                "author": NameField.construct_name_field("Serene Arc"),
+                "author": NameField("Serene Arc"),
                 "organization": "New York Times",
             },
             (),
@@ -110,7 +110,7 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
         (
             {
                 "date": DateField(date(2023, 6, 5)),
-                "author": NameField.construct_name_field("Serene Arc"),
+                "author": NameField("Serene Arc"),
                 "organization": "New York Times",
             },
             ("arc_2023_nyt",),
@@ -119,7 +119,7 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
         (
             {
                 "date": DateField(date(2023, 6, 5)),
-                "author": NameField.construct_name_field(
+                "author": NameField(
                     (
                         "Serene Arc",
                         "Test Testman",
@@ -133,7 +133,7 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
         (
             {
                 "date": DateField(date(2023, 6, 5)),
-                "author": NameField.construct_name_field(
+                "author": NameField(
                     (
                         "Serene Arc",
                         "Test Testman",

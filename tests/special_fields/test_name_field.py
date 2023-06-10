@@ -13,6 +13,6 @@ from omnicite.special_fields.name_field import NameField
     ),
 )
 def test_convert_to_text(test_names: str | Sequence[str], expected: str):
-    test_name_field = NameField.construct_name_field(test_names)
+    test_name_field = NameField(test_names)
     result = str(test_name_field)
     assert result == expected

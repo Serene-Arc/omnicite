@@ -46,6 +46,6 @@ class NewYorkTimesWebsite(BaseWebsite):
             "title": article_metadata["title"],
             "url": article_metadata["url"],
             "urldate": DateField(date.today()),
-            "author": NameField.construct_name_field(self.split_and_sanitise_byline(article_metadata["byline"])),
+            "author": NameField(self.split_and_sanitise_byline(article_metadata["byline"])),
             "subtitle": article_metadata["abstract"],
         }

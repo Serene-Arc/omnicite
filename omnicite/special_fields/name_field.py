@@ -6,7 +6,7 @@ from omnicite.special_fields.name import Name
 
 
 class NameField(BaseSpecialField):
-    def __init__(self, field_contents: Sequence[Name]):
+    def __init__(self, field_contents: str | Sequence[Name | str]):
         if not field_contents:
             raise OmniCiteSourceFieldError(f"Name field requires a name; field was initialised with '{field_contents}'")
         super().__init__(field_contents)
@@ -15,12 +15,10 @@ class NameField(BaseSpecialField):
         out = " and ".join([str(f) for f in self.field_contents])
         return out
 
-    @staticmethod
-    def construct_name_field(in_strings: str | Sequence[str]) -> "NameField":
-        if isinstance(in_strings, str):
-            in_strings = [
-                in_strings,
+    def _construct_field(self) -> Sequence[Name]:
+        if isinstance(self.raw_field_contents, str):
+            self.raw_field_contents = [
+                self.raw_field_contents,
             ]
-        names = [Name(s) for s in in_strings]
-        out = NameField(names)
-        return out
+        names = [Name(s) if isinstance(s, str) else s for s in self.raw_field_contents]
+        return names

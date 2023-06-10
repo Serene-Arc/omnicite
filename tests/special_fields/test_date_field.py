@@ -16,7 +16,7 @@ from omnicite.special_fields.date_field import DateField
     ),
 )
 def test_convert_time_string_to_datetime(test_time_string: str, test_format_string: str, expected: datetime.datetime):
-    result = DateField.convert_time_string_to_date(test_time_string, test_format_string)
+    result = DateField._convert_time_string_to_date(test_time_string, test_format_string)
     assert result == expected
 
 
@@ -26,4 +26,4 @@ def test_convert_time_string_to_datetime(test_time_string: str, test_format_stri
 )
 def test_convert_time_string_to_datetime_exception(test_time_string: str, test_format_string: str):
     with pytest.raises(OmniCiteSourceFieldError):
-        DateField.convert_time_string_to_date(test_time_string, test_format_string)
+        DateField._convert_time_string_to_date(test_time_string, test_format_string)

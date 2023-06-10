@@ -19,7 +19,7 @@ class RawISBN(BaseBook):
 
         self.fields = {
             "doi": isbnlib.doi(self.identifier),
-            "author": NameField.construct_name_field(book_info["Authors"]),
+            "author": NameField(book_info["Authors"]),
             "title": book_info["Title"],
             "publisher": book_info["Publisher"],
             "year": book_info["Year"],
