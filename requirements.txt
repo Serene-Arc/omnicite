@@ -2,8 +2,8 @@ beautifulsoup4
 bs4
 confuse
 isbnlib
+pygithub
 pynytimes
 pytest
 requests
 setuptools
-validators
