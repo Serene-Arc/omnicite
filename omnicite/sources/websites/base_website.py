@@ -57,7 +57,7 @@ class BaseWebsite(BaseSource, ABC):
         )
         for i in range(1, len(essential_fields[0]) + 1):
             yield BaseWebsite._format_unique_identifier(
-                *[t.family_name for t in essential_fields[0][:i]],
+                *[t.final_name for t in essential_fields[0][:i]],
                 essential_fields[1],
                 essential_fields[2],
             )

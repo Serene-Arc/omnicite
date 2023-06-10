@@ -36,6 +36,10 @@ class Name:
     def family_name(self) -> str:
         return " ".join(self._family_name)
 
+    @property
+    def final_name(self) -> str:
+        return self._family_name[-1]
+
     def _name_pre_processing(self, name_string: str) -> list[str]:
         if name_string.startswith("{"):
             self.person_name = False

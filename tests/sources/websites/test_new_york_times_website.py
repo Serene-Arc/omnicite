@@ -149,6 +149,15 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
             ),
             "arc_testman_doe_2023_nyt_1",
         ),
+        (
+            {
+                "date": DateField(date(2023, 6, 5)),
+                "author": NameField("Serene de la Arc"),
+                "organization": "New York Times",
+            },
+            (),
+            "arc_2023_nyt",
+        ),
     ),
 )
 def test_generate_unique_identifier(
