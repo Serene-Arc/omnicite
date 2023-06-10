@@ -1,5 +1,6 @@
 import abc
 import logging
+import re
 from typing import Any, Dict, Iterator, Optional, Sequence, Union
 
 import confuse
@@ -95,7 +96,7 @@ class BaseSource(abc.ABC):
         out = " ".join([str(a) for a in args])
         out = out.lower()
         out = out.replace(" ", "_")
-        out = out.replace("'-", "")
+        out = re.sub(r"[\'-]", "", out)
         return out
 
     @abc.abstractmethod
