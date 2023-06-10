@@ -1,5 +1,5 @@
-from abc import ABC
-from typing import Optional, Sequence
+from abc import ABC, abstractmethod, abstractproperty
+from typing import Iterator, Optional, Sequence
 
 import confuse
 
@@ -43,3 +43,31 @@ class BaseWebsite(BaseSource, ABC):
 
     def __init__(self, url: str, configuration: Optional[confuse.Configuration]):
         super().__init__(url, configuration)
+
+    @property
+    @abstractmethod
+    def website_citation_suffix(self) -> str:
+        raise NotImplementedError
+
+    def _unique_id_generator(self) -> Iterator[str]:
+        essential_fields = (
+            self.fields["author"].field_contents,
+            self.fields["date"].year,
+            self.website_citation_suffix,
+        )
+        for i in range(1, len(essential_fields[0]) + 1):
+            yield BaseWebsite._format_unique_identifier(
+                *[t.family_name for t in essential_fields[0][:i]],
+                essential_fields[1],
+                essential_fields[2],
+            )
+
+        i = 1
+        while True:
+            yield BaseWebsite._format_unique_identifier(
+                *[t.family_name for t in essential_fields[0]],
+                essential_fields[1],
+                essential_fields[2],
+                i,
+            )
+            i += 1

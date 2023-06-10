@@ -1,6 +1,6 @@
 from datetime import date
 from typing import Sequence
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from confuse import Configuration
@@ -156,8 +156,14 @@ def test_generate_unique_identifier(
     existing_identifiers: Sequence[str],
     expected: str,
 ):
-    mock_nyt_website = MagicMock()
-    mock_nyt_website._unique_id_generator = lambda: NewYorkTimesWebsite._unique_id_generator(mock_nyt_website)
-    mock_nyt_website.fields = test_fields
-    result = NewYorkTimesWebsite.generate_unique_identifier(mock_nyt_website, existing_identifiers)
+    class TestNewYorkTimesWebsite(NewYorkTimesWebsite):
+        def __init__(self, identifier: str):
+            super().__init__(identifier, MagicMock())
+            self.fields = test_fields
+
+        def retrieve_information(self):
+            pass
+
+    test_source = TestNewYorkTimesWebsite("test")
+    result = test_source.generate_unique_identifier(existing_identifiers)
     assert result == expected
