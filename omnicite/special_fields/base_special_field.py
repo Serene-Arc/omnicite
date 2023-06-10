@@ -12,5 +12,5 @@ class BaseSpecialField(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _construct_field(self):
+    def _construct_field(self) -> Any:
         raise NotImplementedError
