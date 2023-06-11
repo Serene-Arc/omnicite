@@ -7,6 +7,7 @@ import confuse
 import requests
 
 from omnicite.exceptions import OmniCiteSourceException, OmniCiteSourceFieldError, OmniCiteWebError, ResourceNotFound
+from omnicite.special_fields.base_special_field import BaseSpecialField
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,9 @@ class BaseSource(abc.ABC):
         self.configuration = configuration
         self.fields: Dict = dict()
         self.retrieve_information()
+
+    def __getitem__(self, item) -> str | BaseSpecialField:
+        return self.fields[item]
 
     @abc.abstractmethod
     def retrieve_information(self):
