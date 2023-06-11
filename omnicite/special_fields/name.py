@@ -1,6 +1,8 @@
 import re
 from typing import Sequence
 
+import regex
+
 
 class Name:
     family_name_words = (
@@ -113,12 +115,16 @@ class Name:
     @staticmethod
     def _separate_initials(in_strings: Sequence[str]) -> Sequence[str]:
         out = []
-        initial_pattern = re.compile(r"([A-Z]\.?(?![a-z]+)|[a-z]\.)")
+        initial_pattern = regex.compile(r"([A-Z]\.?(?!\p{Ll}+)|[a-z]\.)")
         for s in in_strings:
             matches = initial_pattern.findall(s)
             if matches:
                 for group in matches:
                     out.append(group.strip(" .") + ".")
+            elif len(s) == 1 and s.isupper():
+                out.append(s + ".")
+            elif all(c.isupper() for c in s):
+                out.extend([c + "." for c in s])
             else:
                 out.append(s)
         return out
