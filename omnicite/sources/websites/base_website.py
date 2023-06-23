@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod, abstractproperty
-from typing import Iterator, Optional, Sequence
+from abc import ABC, abstractmethod
+from typing import Iterator, Optional
 
 import confuse
 
@@ -55,17 +55,5 @@ class BaseWebsite(BaseSource, ABC):
             self.fields["date"].year,
             self.website_citation_suffix,
         )
-        for i in range(1, len(essential_fields[0]) + 1):
-            yield BaseWebsite._format_unique_identifier(
-                *[t.final_name for t in essential_fields[0][:i]],
-                *essential_fields[1:],
-            )
-
-        i = 1
-        while True:
-            yield BaseWebsite._format_unique_identifier(
-                *[t.family_name for t in essential_fields[0]],
-                *essential_fields[1:],
-                i,
-            )
-            i += 1
+        yield from self._add_authors_id_generator(essential_fields)
+        yield from self._increment_number_id_generator(essential_fields)

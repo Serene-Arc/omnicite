@@ -1,7 +1,7 @@
 import abc
 import logging
 import re
-from typing import Any, Dict, Iterator, Optional, Sequence, Union
+from typing import Any, Dict, Iterator, Optional, Sequence, Tuple, Union
 
 import confuse
 import requests
@@ -112,3 +112,24 @@ class BaseSource(abc.ABC):
             if val not in existing_identifiers:
                 return val
         raise OmniCiteSourceException(f"Cannot create unique identifier for source '{self.identifier}'")
+
+    @staticmethod
+    def _increment_number_id_generator(essential_fields: Sequence[Any, ...]) -> Iterator[str]:
+        """Assumes that the first item is a list of Name objects."""
+        i = 1
+        while True:
+            yield BaseSource._format_unique_identifier(
+                *[t.family_name for t in essential_fields[0]],
+                *essential_fields[1:],
+                i,
+            )
+            i += 1
+
+    @staticmethod
+    def _add_authors_id_generator(essential_fields: Sequence[Any, ...]) -> Iterator[str]:
+        """Assumes that the first item is a list of Name objects."""
+        for i in range(1, len(essential_fields[0]) + 1):
+            yield BaseSource._format_unique_identifier(
+                *[t.final_name for t in essential_fields[0][:i]],
+                *essential_fields[1:],
+            )
