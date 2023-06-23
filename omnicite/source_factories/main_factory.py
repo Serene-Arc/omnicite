@@ -9,7 +9,7 @@ from omnicite.source_factories.article_factory import ArticleFactory
 from omnicite.source_factories.base_factory import BaseFactory
 from omnicite.source_factories.book_factory import BookFactory
 from omnicite.source_factories.website_factory import WebsiteFactory
-from omnicite.sources.articles.raw_doi import RawDOI
+from omnicite.sources.articles.crossref import Crossref
 from omnicite.sources.base_source import BaseSource
 from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.sources.software.github_repository import GitHubRepository
@@ -18,7 +18,7 @@ from omnicite.sources.websites.the_guardian import TheGuardian
 
 master_source_list = {
     "ISBNlib": ISBNLib,
-    "Raw DOI": RawDOI,
+    "Crossref": Crossref,
     "New York Times": NewYorkTimes,
     "The Guardian": TheGuardian,
     "GitHub Repository": GitHubRepository,

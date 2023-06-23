@@ -3,9 +3,9 @@ from typing import Type
 import pytest
 
 from omnicite.source_factories.main_factory import MainFactory
-from omnicite.sources.articles.raw_doi import RawDOI
+from omnicite.sources.articles.crossref import Crossref
 from omnicite.sources.base_source import BaseSource
-from omnicite.sources.books.raw_isbn import RawISBN
+from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.sources.websites.new_york_times import NewYorkTimes
 
 
@@ -43,10 +43,10 @@ def test_is_doi(test_identifier: str, expected: bool):
 @pytest.mark.parametrize(
     ("test_identifier", "expected_type"),
     (
-        ("10.1590/0102-311x00133115", RawDOI),
-        ("https://doi.org/10.1177/21582440231178261", RawDOI),
+        ("10.1590/0102-311x00133115", Crossref),
+        ("https://doi.org/10.1177/21582440231178261", Crossref),
         ("https://www.nytimes.com/2023/05/18/us/tiktok-ban-montana-reaction.html", NewYorkTimes),
-        ("9780261102378", RawISBN),
+        ("9780261102378", ISBNLib),
     ),
 )
 def test_pull_lever(test_identifier: str, expected_type: Type[BaseSource]):
