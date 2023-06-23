@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # coding=utf-8
 
-import argparse
 import logging
 import sys
-from pathlib import Path
 
-parser = argparse.ArgumentParser()
+import click
+
+from omnicite.source_factories.main_factory import master_source_list
+
 logger = logging.getLogger()
 
 
@@ -23,19 +24,35 @@ def _setup_logging(verbosity: int):
         stream.setLevel(logging.INFO)
 
 
-def add_arguments(parser: argparse.ArgumentParser):
-    parser.add_argument("-v", "--verbose", action="count", default=0)
+@click.group()
+def cli():
+    pass
 
 
-def main(args: argparse.Namespace):
-    _setup_logging(args.verbose)
+@cli.command("interactive")
+def cli_interactive():
+    pass
 
 
-def entry():
-    add_arguments(parser)
-    args = parser.parse_args()
-    main(args)
+@cli.command("single")
+def cli_single():
+    pass
+
+
+@click.option("--list-raw-modules", is_flag=True, default=False)
+@cli.command("list-modules")
+def cli_list_modules(list_raw_modules: bool):
+    names = []
+    if list_raw_modules:
+        for val in master_source_list.values():
+            names.append(f"{val.__name__.lower()} ({val.entry_type})")
+    else:
+        for name, val in master_source_list.items():
+            names.append(f"{name} ({val.entry_type})")
+    names = sorted(names)
+    for n in names:
+        print(n)
 
 
 if __name__ == "__main__":
-    entry()
+    cli()
