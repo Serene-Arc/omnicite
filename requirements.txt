@@ -1,9 +1,12 @@
 beautifulsoup4
 bs4
+click
 confuse
 isbnlib
 pygithub
 pynytimes
 pytest
+regex
 requests
 setuptools
+validators
