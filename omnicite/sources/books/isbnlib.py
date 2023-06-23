@@ -8,7 +8,7 @@ from omnicite.sources.books.base_book import BaseBook
 from omnicite.special_fields.name_field import NameField
 
 
-class RawISBN(BaseBook):
+class ISBNLib(BaseBook):
     def __init__(self, isbn: str):
         super().__init__(isbn, None)
 

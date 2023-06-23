@@ -1,7 +1,7 @@
 import pytest
 
 from omnicite.exceptions import OmniCiteSourceException
-from omnicite.sources.books.raw_isbn import RawISBN
+from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.special_fields.base_special_field import BaseSpecialField
 
 
@@ -22,7 +22,7 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
     ),
 )
 def test_make_source(test_identifier: str, expected_dict: dict[str | BaseSpecialField]):
-    test_source = RawISBN(test_identifier)
+    test_source = ISBNLib(test_identifier)
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
@@ -36,5 +36,5 @@ def test_make_source(test_identifier: str, expected_dict: dict[str | BaseSpecial
 )
 def test_make_source_bad_isbn(test_identifier: str):
     with pytest.raises(OmniCiteSourceException) as exc:
-        RawISBN(test_identifier)
+        ISBNLib(test_identifier)
     assert "not a valid ISBN" in str(exc.value)
