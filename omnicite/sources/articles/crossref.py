@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Iterator, Sequence
 
 import crossref.restful
 
