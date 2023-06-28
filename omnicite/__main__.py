@@ -2,13 +2,22 @@
 # coding=utf-8
 
 import logging
+import re
 import sys
+from typing import Optional
 
 import click
 
 from omnicite.source_factories.main_factory import master_source_list
 
 logger = logging.getLogger()
+
+
+def separate_specified_module(in_string: str) -> Optional[str]:
+    pattern = re.compile(r"^(.*?):::")
+    match = pattern.match(in_string)
+    if match:
+        return match.group(1)
 
 
 def _setup_logging(verbosity: int):
