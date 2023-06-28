@@ -114,7 +114,7 @@ class BaseSource(abc.ABC):
         raise OmniCiteSourceException(f"Cannot create unique identifier for source '{self.identifier}'")
 
     @staticmethod
-    def _increment_number_id_generator(essential_fields: Sequence[Any, ...]) -> Iterator[str]:
+    def _increment_number_id_generator(essential_fields: Sequence[Any]) -> Iterator[str]:
         """Assumes that the first item is a list of Name objects."""
         i = 1
         while True:
@@ -126,7 +126,7 @@ class BaseSource(abc.ABC):
             i += 1
 
     @staticmethod
-    def _add_authors_id_generator(essential_fields: Sequence[Any, ...]) -> Iterator[str]:
+    def _add_authors_id_generator(essential_fields: Sequence[Any]) -> Iterator[str]:
         """Assumes that the first item is a list of Name objects."""
         for i in range(1, len(essential_fields[0]) + 1):
             yield BaseSource._format_unique_identifier(
