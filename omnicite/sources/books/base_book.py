@@ -58,8 +58,8 @@ class BaseBook(BaseSource, ABC):
         "volumes",
     )
 
-    def __init__(self, identifier: str, configuration: Optional[confuse.Configuration]):
-        super().__init__(identifier, configuration)
+    def __init__(self, identifier: str):
+        super().__init__(identifier)
 
     def _unique_id_generator(self) -> Iterator[str]:
         essential_fields = (

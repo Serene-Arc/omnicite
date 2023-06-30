@@ -10,9 +10,10 @@ from omnicite.special_fields.name_field import NameField
 
 class Crossref(BaseArticle):
     def __init__(self, identifier: str):
-        super().__init__(identifier, None)
+        super().__init__(identifier)
 
-    def retrieve_information(self):
+    async def retrieve_information(self, _):
+        # TODO: make async
         work = crossref.restful.Works()
         work = work.doi(self.identifier)
 

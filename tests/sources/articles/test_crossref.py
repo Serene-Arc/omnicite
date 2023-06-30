@@ -1,10 +1,12 @@
 from datetime import date
+from unittest.mock import MagicMock
 
 import pytest
 
-from omnicite.sources.articles.base_article import BaseArticle
+from omnicite.sources.articles.crossref import Crossref
 
 
+@pytest.mark.asyncio
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_doi", "expected_dict_values"),
@@ -44,6 +46,6 @@ from omnicite.sources.articles.base_article import BaseArticle
         ),
     ),
 )
-def test_get_doi_information(test_doi: str, expected_dict_values: dict):
-    result = BaseArticle.get_doi_information(test_doi)
+async def test_get_doi_information(test_doi: str, expected_dict_values: dict):
+    result = await Crossref.construct_source(test_doi, MagicMock())
     assert all([str(result[key]) == expected_dict_values[key] for key in expected_dict_values.keys()])

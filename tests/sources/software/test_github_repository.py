@@ -11,6 +11,7 @@ from omnicite.special_fields.name_field import NameField
 from omnicite.special_fields.version_field import VersionField
 
 
+@pytest.mark.asyncio
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_identifier", "expected_dict"),
@@ -37,11 +38,11 @@ from omnicite.special_fields.version_field import VersionField
         ),
     ),
 )
-def test_make_source(
+async def test_make_source(
     test_identifier: str,
     expected_dict: dict[str, str | BaseSpecialField],
 ):
-    test_source = GitHubRepository(test_identifier)
+    test_source = await GitHubRepository.construct_source(test_identifier, MagicMock())
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
@@ -75,14 +76,7 @@ def test_generate_unique_identifier(
     existing_identifiers: Sequence[str],
     expected: str,
 ):
-    class TestGithubRepository(GitHubRepository):
-        def __init__(self, identifier: str):
-            super().__init__(identifier)
-            self.fields = test_fields
-
-        def retrieve_information(self):
-            pass
-
-    test_source = TestGithubRepository("test")
+    test_source = GitHubRepository("test")
+    test_source.fields = test_fields
     result = test_source.generate_unique_identifier(existing_identifiers)
     assert result == expected

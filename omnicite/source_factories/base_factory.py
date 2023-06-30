@@ -9,5 +9,5 @@ from omnicite.sources.base_source import BaseSource
 class BaseFactory(ABC):
     @staticmethod
     @abstractmethod
-    def pull_lever(identifier: str, configuration: Optional[confuse.Configuration] = None) -> Type[BaseSource]:
+    def pull_lever(identifier: str, configuration: confuse.Configuration) -> Type[BaseSource]:
         raise NotImplementedError

@@ -41,8 +41,8 @@ class BaseWebsite(BaseSource, ABC):
         "version",
     ]
 
-    def __init__(self, url: str, configuration: Optional[confuse.Configuration]):
-        super().__init__(url, configuration)
+    def __init__(self, url: str):
+        super().__init__(url)
 
     @property
     @abstractmethod

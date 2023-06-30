@@ -11,6 +11,7 @@ from omnicite.special_fields.date_field import DateField
 from omnicite.special_fields.name_field import NameField
 
 
+@pytest.mark.asyncio
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_url", "expected_dict"),
@@ -39,12 +40,12 @@ from omnicite.special_fields.name_field import NameField
         ),
     ),
 )
-def test_make_source(
+async def test_make_source(
     test_url: str,
     expected_dict: dict[str, str | BaseSpecialField],
     test_configuration: Configuration,
 ):
-    test_source = TheGuardian(test_url, test_configuration)
+    test_source = await TheGuardian.construct_source(test_url, test_configuration)
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
@@ -76,10 +77,10 @@ def test_generate_unique_identifier(
 ):
     class TestTheGuardian(TheGuardian):
         def __init__(self, identifier: str):
-            super().__init__(identifier, MagicMock())
+            super().__init__(identifier)
             self.fields = test_fields
 
-        def retrieve_information(self):
+        async def retrieve_information(self, _):
             pass
 
     test_source = TestTheGuardian("test")

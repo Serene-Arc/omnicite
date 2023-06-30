@@ -1,5 +1,4 @@
 from abc import ABC
-from typing import Optional
 
 import confuse
 
@@ -40,5 +39,5 @@ class BaseSoftware(BaseSource, ABC):
         "version",
     )
 
-    def __init__(self, identifier: str, configuration: Optional[confuse.Configuration]):
-        super().__init__(identifier, configuration)
+    def __init__(self, identifier: str):
+        super().__init__(identifier)

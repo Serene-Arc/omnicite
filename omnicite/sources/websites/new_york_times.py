@@ -12,8 +12,8 @@ from omnicite.special_fields.name_field import NameField
 
 
 class NewYorkTimes(BaseWebsite):
-    def __init__(self, url: str, configuration: confuse.Configuration):
-        super().__init__(url, configuration)
+    def __init__(self, url: str):
+        super().__init__(url)
 
     @property
     def website_citation_suffix(self) -> str:
@@ -28,8 +28,9 @@ class NewYorkTimes(BaseWebsite):
         out = list(filter(lambda t: t not in ("", "and", ",", None), out))
         return out
 
-    def retrieve_information(self):
-        api_key = self.configuration["apis"]["new_york_times"]["api_key"].get()
+    async def retrieve_information(self, configuration: confuse.Configuration):
+        # TODO: make async
+        api_key = configuration["apis"]["new_york_times"]["api_key"].get()
         with NYTAPI(api_key, parse_dates=True) as nyt:
             article_metadata = nyt.article_metadata(self.identifier)
         if len(article_metadata) == 0:

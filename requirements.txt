@@ -1,3 +1,4 @@
+aiohttp
 beautifulsoup4
 bs4
 click
@@ -6,6 +7,7 @@ isbnlib
 pygithub
 pynytimes
 pytest
+pytest-asyncio
 regex
 requests
 setuptools

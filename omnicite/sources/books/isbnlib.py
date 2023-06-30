@@ -10,9 +10,9 @@ from omnicite.special_fields.name_field import NameField
 
 class ISBNLib(BaseBook):
     def __init__(self, isbn: str):
-        super().__init__(isbn, None)
+        super().__init__(isbn)
 
-    def retrieve_information(self):
+    async def retrieve_information(self, _):
         if isbnlib.notisbn(self.identifier):
             raise OmniCiteSourceException(f"String '{self.identifier}' is not a valid ISBN")
         book_info = isbnlib.meta(self.identifier, service="default")
@@ -25,6 +25,3 @@ class ISBNLib(BaseBook):
             "year": book_info["Year"],
             "isbn": book_info["ISBN-13"],
         }
-
-    def _unique_id_generator(self) -> Iterator[str]:
-        raise NotImplementedError

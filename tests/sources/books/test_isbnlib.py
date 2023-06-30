@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 
 from omnicite.exceptions import OmniCiteSourceException
@@ -5,6 +7,7 @@ from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.special_fields.base_special_field import BaseSpecialField
 
 
+@pytest.mark.asyncio
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_identifier", "expected_dict"),
@@ -21,11 +24,12 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
         ),
     ),
 )
-def test_make_source(test_identifier: str, expected_dict: dict[str | BaseSpecialField]):
-    test_source = ISBNLib(test_identifier)
+async def test_make_source(test_identifier: str, expected_dict: dict[str | BaseSpecialField]):
+    test_source = await ISBNLib.construct_source(test_identifier, MagicMock())
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "test_identifier",
     (
@@ -34,7 +38,7 @@ def test_make_source(test_identifier: str, expected_dict: dict[str | BaseSpecial
         "123456",
     ),
 )
-def test_make_source_bad_isbn(test_identifier: str):
+async def test_make_source_bad_isbn(test_identifier: str):
     with pytest.raises(OmniCiteSourceException) as exc:
-        ISBNLib(test_identifier)
+        await ISBNLib.construct_source(test_identifier, MagicMock())
     assert "not a valid ISBN" in str(exc.value)

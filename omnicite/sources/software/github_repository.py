@@ -13,9 +13,9 @@ class GitHubRepository(BaseSoftware):
         self,
         identifier: str,
     ):
-        super().__init__(identifier, None)
+        super().__init__(identifier)
 
-    def retrieve_information(self):
+    async def retrieve_information(self, _):
         repo_name = self.identifier
         if self.identifier.startswith("https://"):
             match = re.match(r"^https://github\.com/(.*)$", self.identifier)

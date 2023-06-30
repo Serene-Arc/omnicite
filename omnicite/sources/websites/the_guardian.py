@@ -1,7 +1,7 @@
 import json
 import re
 from datetime import date, datetime
-from typing import Sequence
+from typing import Optional, Sequence
 
 import bs4
 import confuse
@@ -14,19 +14,20 @@ from omnicite.special_fields.name_field import NameField
 
 
 class TheGuardian(BaseWebsite):
-    def __init__(self, url: str, configuration: confuse.Configuration):
-        super().__init__(url, configuration)
+    def __init__(self, url: str):
+        super().__init__(url)
 
     @property
     def website_citation_suffix(self) -> str:
         return "guardian"
 
-    def retrieve_information(self):
+    async def retrieve_information(self, configuration: confuse.Configuration):
+        # TODO: async
         api_url = re.sub(r"(www\.)?theguardian\.com", "content.guardianapis.com", self.identifier)
         response = requests.get(
             api_url,
             params={
-                "api-key": self.configuration["apis"]["the_guardian"]["api_key"].get(),
+                "api-key": configuration["apis"]["the_guardian"]["api_key"].get(),
                 "show-fields": "all",
             },
         )

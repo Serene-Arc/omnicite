@@ -11,6 +11,7 @@ from omnicite.special_fields.date_field import DateField
 from omnicite.special_fields.name_field import NameField
 
 
+@pytest.mark.asyncio
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_url", "expected_dict"),
@@ -55,15 +56,16 @@ from omnicite.special_fields.name_field import NameField
         ),
     ),
 )
-def test_make_source(
+async def test_make_source(
     test_url: str,
     expected_dict: dict[str, str | BaseSpecialField],
     test_configuration: Configuration,
 ):
-    test_source = NewYorkTimes(test_url, test_configuration)
+    test_source = await NewYorkTimes.construct_source(test_url, test_configuration)
     assert all([str(test_source.fields[key]) == expected_dict[key] for key in expected_dict.keys()])
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("test_string", "expected"),
     (
@@ -160,19 +162,11 @@ def test_split_and_sanitise_byline(test_string: str, expected: Sequence[str]):
         ),
     ),
 )
-def test_generate_unique_identifier(
+async def test_generate_unique_identifier(
     test_fields: dict[str, str | BaseSpecialField],
     existing_identifiers: Sequence[str],
     expected: str,
 ):
-    class TestNewYorkTimesWebsite(NewYorkTimes):
-        def __init__(self, identifier: str):
-            super().__init__(identifier, MagicMock())
-            self.fields = test_fields
-
-        def retrieve_information(self):
-            pass
-
-    test_source = TestNewYorkTimesWebsite("test")
+    test_source = await NewYorkTimes.construct_source("test", MagicMock())
     result = test_source.generate_unique_identifier(existing_identifiers)
     assert result == expected

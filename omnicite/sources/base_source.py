@@ -1,7 +1,7 @@
 import abc
 import logging
 import re
-from typing import Any, Dict, Iterator, Optional, Sequence, Tuple, Union
+from typing import Any, Dict, Iterator, Optional, Sequence, Tuple, Type, Union
 
 import confuse
 import requests
@@ -17,17 +17,25 @@ class BaseSource(abc.ABC):
     required_fields: Sequence = ()
     optional_fields: Sequence = ()
 
-    def __init__(self, identifier: str, configuration: Optional[confuse.Configuration]):
+    def __init__(self, identifier: str):
         self.identifier = identifier
-        self.configuration = configuration
         self.fields: Dict = dict()
-        self.retrieve_information()
 
     def __getitem__(self, item) -> str | BaseSpecialField:
         return self.fields[item]
 
+    @classmethod
+    async def construct_source(
+        cls: Type["BaseSource"],
+        identifier: str,
+        configuration: confuse.Configuration,
+    ) -> "BaseSource":
+        out = cls(identifier)
+        await out.retrieve_information(configuration)
+        return out
+
     @abc.abstractmethod
-    def retrieve_information(self):
+    async def retrieve_information(self, configuration: confuse.Configuration):
         raise NotImplementedError
 
     @staticmethod
