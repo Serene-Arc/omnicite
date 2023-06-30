@@ -4,6 +4,7 @@
 import logging
 import re
 import sys
+from pathlib import Path
 from typing import Optional
 
 import click
@@ -34,18 +35,35 @@ def _setup_logging(verbosity: int):
 
 
 @click.group()
-def cli():
-    pass
+@click.option("-o", "--output-file", type=str, default=None)
+@click.option("-v", "--verbose", count=True, default=0)
+@click.pass_context
+def cli(ctx: click.Context, output_file: Optional[str], verbose: int):
+    _setup_logging(verbose)
+    ctx.ensure_object(dict)
+    ctx.obj["OUTPUT_FILE"] = output_file
+    ctx.obj["VERBOSE"] = verbose
 
 
 @cli.command("interactive")
-def cli_interactive():
+@click.pass_context
+def cli_interactive(ctx: click.Context):
+    output_file = ctx.obj["OUTPUT_FILE"]
+    verbose = ctx.obj["VERBOSE"]
     pass
 
 
 @cli.command("single")
-def cli_single():
+@click.pass_context
+def cli_single(ctx: click.Context):
     pass
+
+
+@click.argument("file", type=str)
+@cli.command("input-file")
+@click.pass_context
+def cli_input_file(ctx: click.Context, file: str):
+    file = Path(file).expanduser().resolve()
 
 
 @click.option("--list-raw-modules", is_flag=True, default=False)
