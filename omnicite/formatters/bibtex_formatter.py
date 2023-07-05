@@ -8,6 +8,7 @@ from omnicite.special_fields.base_special_field import BaseSpecialField
 class BibtexFormatter(BaseFormatter):
     @staticmethod
     def convert_source(source: BaseSource):
+        # TODO
         pass
 
     @staticmethod
