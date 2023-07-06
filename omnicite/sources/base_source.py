@@ -19,6 +19,7 @@ class BaseSource(abc.ABC):
 
     def __init__(self, identifier: str):
         self.identifier = identifier
+        self.unique_identifier: Optional[str] = None
         self.fields: Dict = dict()
 
     def __getitem__(self, item) -> str | BaseSpecialField:
