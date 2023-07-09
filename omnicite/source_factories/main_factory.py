@@ -1,6 +1,7 @@
 import re
 from typing import Type
 
+import confuse
 import isbnlib
 import validators
 
@@ -27,13 +28,13 @@ master_source_list = {
 
 class MainFactory(BaseFactory):
     @staticmethod
-    def pull_lever(identifier: str) -> Type[BaseSource]:
+    def pull_lever(identifier: str, configuration: confuse.Configuration) -> Type[BaseSource]:
         if MainFactory.is_doi(identifier):
-            return ArticleFactory.pull_lever(identifier)
+            return ArticleFactory.pull_lever(identifier, configuration)
         elif not isbnlib.notisbn(identifier):
-            return BookFactory.pull_lever(identifier)
+            return BookFactory.pull_lever(identifier, configuration)
         elif MainFactory.is_url(identifier):
-            return WebsiteFactory.pull_lever(identifier)
+            return WebsiteFactory.pull_lever(identifier, configuration)
         raise OmniCiteException(f"Could not find a source type for identifier '{identifier}'")
 
     @staticmethod

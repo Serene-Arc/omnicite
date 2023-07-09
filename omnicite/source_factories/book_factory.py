@@ -7,5 +7,5 @@ from omnicite.sources.books.isbnlib import ISBNLib
 
 class BookFactory(BaseFactory):
     @staticmethod
-    def pull_lever(identifier: str) -> Type[BaseSource]:
+    def pull_lever(identifier: str, _) -> Type[BaseSource]:
         return ISBNLib

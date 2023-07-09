@@ -1,4 +1,5 @@
 from typing import Type
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -7,6 +8,7 @@ from omnicite.sources.articles.crossref import Crossref
 from omnicite.sources.base_source import BaseSource
 from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.sources.websites.new_york_times import NewYorkTimes
+from omnicite.sources.websites.the_guardian import TheGuardian
 
 
 @pytest.mark.parametrize(
@@ -47,8 +49,13 @@ def test_is_doi(test_identifier: str, expected: bool):
         ("https://doi.org/10.1177/21582440231178261", Crossref),
         ("https://www.nytimes.com/2023/05/18/us/tiktok-ban-montana-reaction.html", NewYorkTimes),
         ("9780261102378", ISBNLib),
+        (
+            "https://www.theguardian.com/australia-news/2023/jul/09/kathryn-campbell-retaining-aukus-role-would-be-"
+            "insult-to-robodebt-victims-crossbenchers-say",
+            TheGuardian,
+        ),
     ),
 )
 def test_pull_lever(test_identifier: str, expected_type: Type[BaseSource]):
-    result = MainFactory.pull_lever(test_identifier)
+    result = MainFactory.pull_lever(test_identifier, MagicMock())
     assert result == expected_type
