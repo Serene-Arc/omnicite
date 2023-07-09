@@ -8,6 +8,7 @@ from omnicite.sources.articles.crossref import Crossref
 from omnicite.sources.base_source import BaseSource
 from omnicite.sources.books.isbnlib import ISBNLib
 from omnicite.sources.websites.new_york_times import NewYorkTimes
+from omnicite.sources.websites.substack import Substack
 from omnicite.sources.websites.the_guardian import TheGuardian
 
 
@@ -53,6 +54,13 @@ def test_is_doi(test_identifier: str, expected: bool):
             "https://www.theguardian.com/australia-news/2023/jul/09/kathryn-campbell-retaining-aukus-role-would-be-"
             "insult-to-robodebt-victims-crossbenchers-say",
             TheGuardian,
+        ),
+        ("https://www.erininthemorning.com/p/top-5-states-to-be-transgender-in", Substack),
+        ("https://heathercoxrichardson.substack.com/p/july-6-2023", Substack),
+        (
+            "https://fighttorepair.substack.com/p/from-farms-to-pharmaceuticals-its?utm_source=profile"
+            "&utm_medium=reader2",
+            Substack,
         ),
     ),
 )

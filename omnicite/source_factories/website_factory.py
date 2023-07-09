@@ -7,6 +7,7 @@ import requests
 from omnicite.source_factories.base_factory import BaseFactory
 from omnicite.sources.base_source import BaseSource
 from omnicite.sources.websites.new_york_times import NewYorkTimes
+from omnicite.sources.websites.substack import Substack
 from omnicite.sources.websites.the_guardian import TheGuardian
 
 
@@ -20,9 +21,17 @@ class WebsiteFactory(BaseFactory):
         elif "theguardian.com" in url_parts.netloc:
             return TheGuardian
 
-        # sites below here require parsing the webpage to determine the class
+        # sites below here require parsing the webpage to determine the class.
         page = requests.get(identifier)
         soup = bs4.BeautifulSoup(page.text)
+        if WebsiteFactory.is_substack_page(soup):
+            return Substack
+
+    @staticmethod
+    def is_substack_page(soup: bs4.BeautifulSoup) -> bool:
+        footer = soup.find("div", attrs={"class": "footer-slogan-blurb"})
+        result = footer is not None and "Substack\xa0is the home for great writing" in footer.text
+        return result
 
     @staticmethod
     def split_url(identifier: str) -> ParseResult:
